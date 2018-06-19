@@ -9,6 +9,11 @@ import (
 func RegisterRouter(router *gin.Engine) {
 	user := router.Group("/user")
 	{
-		user.GET("/register", controllers.User.Register)
+		user.POST("/create", controllers.User.Create)
+	}
+
+	qr := router.Group("/qrcode")
+	{
+		qr.POST("/create", controllers.QrCode.Create)
 	}
 }

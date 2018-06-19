@@ -22,8 +22,8 @@ const (
 )
 
 type app struct {
+	db     *gorm.DB
 	Config *Config
-	DB     *gorm.DB
 	Logger *log.Logger
 }
 
@@ -46,6 +46,11 @@ type Config struct {
 // App App
 var App = &app{}
 
+// DB 防止污染db
+func (t *app) DB() *gorm.DB {
+	return t.db.New()
+}
+
 func init() {
 	App.Config = &Config{}
 	if err := configor.Load(App.Config, "conf/app.yml"); err != nil {
@@ -58,19 +63,21 @@ func init() {
 	args := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&timeout=3s&parseTime=true&loc=Local", cdb.User, cdb.Password, cdb.Host, cdb.Port, cdb.Database, cdb.Charset)
 
 	var err error
-	if App.DB, err = gorm.Open("mysql", args); err != nil {
+	if App.db, err = gorm.Open("mysql", args); err != nil {
 		panic(err)
 	}
 
 	// 关闭tableName自动复数
-	App.DB.SingularTable(true)
+	App.db.SingularTable(true)
 	// 默认不打印日志
-	App.DB.LogMode(false)
+	App.db.LogMode(false)
+	// 跳过关联保存
+	App.db.Set("gorm:save_associations", false)
 
-	App.DB.DB().SetMaxIdleConns(cdb.MaxIdle)
-	App.DB.DB().SetMaxOpenConns(cdb.MaxOpen)
+	App.db.DB().SetMaxIdleConns(cdb.MaxIdle)
+	App.db.DB().SetMaxOpenConns(cdb.MaxOpen)
 
 	if App.Config.Env != PROD {
-		App.DB.LogMode(true)
+		App.db.LogMode(true)
 	}
 }

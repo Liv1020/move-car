@@ -22,7 +22,6 @@ const (
 )
 
 type app struct {
-	Env    string
 	Config *Config
 	DB     *gorm.DB
 	Logger *log.Logger
@@ -30,6 +29,7 @@ type app struct {
 
 // Config Config
 type Config struct {
+	Env  string
 	Port int
 	DB   struct {
 		Host     string
@@ -70,7 +70,7 @@ func init() {
 	App.DB.DB().SetMaxIdleConns(cdb.MaxIdle)
 	App.DB.DB().SetMaxOpenConns(cdb.MaxOpen)
 
-	if App.Env != PROD {
+	if App.Config.Env != PROD {
 		App.DB.LogMode(true)
 	}
 }

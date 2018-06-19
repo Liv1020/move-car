@@ -1,6 +1,7 @@
 package components
 
 import "github.com/jinzhu/gorm"
+import _ "github.com/go-sql-driver/mysql"
 
 // DB DB
 var DB *gorm.DB

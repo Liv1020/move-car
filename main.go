@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+
+	"github.com/Liv1020/move-car/components"
 	"github.com/Liv1020/move-car/routers"
 	"github.com/gin-gonic/gin"
 )
@@ -14,5 +17,5 @@ func main() {
 
 	routers.RegisterRouter(r)
 
-	r.Run(":8080")
+	r.Run(fmt.Sprintf(":%d", components.Config.Port))
 }

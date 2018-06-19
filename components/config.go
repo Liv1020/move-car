@@ -7,7 +7,8 @@ var Config config
 
 // Config Config
 type config struct {
-	DB db
+	Port int
+	DB   db
 }
 
 // DB 数据库连接

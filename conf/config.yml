@@ -1,0 +1,7 @@
+db:
+    host:     test
+    port:     test
+    user:     test
+    password: test
+    DatabaseName:     1234
+    Charset:     1234

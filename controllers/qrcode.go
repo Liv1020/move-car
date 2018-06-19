@@ -15,20 +15,13 @@ var QrCode = qrcode{}
 func (t *qrcode) Create(c *gin.Context) {
 	db := components.App.DB()
 
-	row := &models.Qrcode{
+	qr := &models.Qrcode{
 		UserID: 0,
 	}
-	if err := db.Save(row).Error; err != nil {
-		c.JSON(200, gin.H{
-			"status":  500,
-			"message": err,
-		})
+	if err := db.Save(qr).Error; err != nil {
+		components.ResponseError(c, 1, err)
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"status":  200,
-		"message": "ok",
-		"data":    row,
-	})
+	components.ResponseSuccess(c, qr)
 }

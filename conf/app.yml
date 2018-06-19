@@ -1,11 +1,15 @@
 port: 8080
 env: dev
 db:
-    host: localhost
-    port: 3306
-    user: application
-    password: 123456
-    database: application
-    charset: utf8mb4
-    maxidle: 10
-    maxopen: 20
+  host: localhost
+  port: 3306
+  user: application
+  password: 123456
+  database: application
+  charset: utf8mb4
+  maxidle: 10
+  maxopen: 20
+wechat:
+  appid: wx351aab24bd75e0ab
+  appsecret: fe53187244f178a7a4ee817599107e00
+  oauthurl: http://localhost:8080/user/code

@@ -10,6 +10,8 @@ func RegisterRouter(router *gin.Engine) {
 	user := router.Group("/user")
 	{
 		user.POST("/create", controllers.User.Create)
+		user.GET("/oauth", controllers.User.OAuth)
+		user.GET("/code", controllers.User.Code)
 	}
 
 	qr := router.Group("/qrcode")

@@ -41,6 +41,11 @@ type Config struct {
 		MaxIdle  int
 		MaxOpen  int
 	}
+	Wechat struct {
+		AppID     string
+		AppSecret string
+		OAuthUrl  string
+	}
 }
 
 // App App

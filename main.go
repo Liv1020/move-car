@@ -17,5 +17,5 @@ func main() {
 
 	routers.RegisterRouter(r)
 
-	r.Run(fmt.Sprintf(":%d", components.Config.Port))
+	r.Run(fmt.Sprintf(":%d", components.App.Config.Port))
 }

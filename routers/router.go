@@ -18,4 +18,9 @@ func RegisterRouter(router *gin.Engine) {
 	{
 		qr.POST("/create", controllers.QrCode.Create)
 	}
+
+	js := router.Group("/js")
+	{
+		js.GET("/config", controllers.JS.Config)
+	}
 }

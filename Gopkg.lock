@@ -15,6 +15,12 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/chanxuehong/util"
+  packages = ["security"]
+  revision = "3283ef9c9f257d87e79ade33fc113ec8a22c3b00"
+
+[[projects]]
+  branch = "master"
   name = "github.com/gin-contrib/sse"
   packages = ["."]
   revision = "22d885f9ecc78bf4ee5d72b937e4bbcdc58e8cae"
@@ -109,7 +115,11 @@
   name = "gopkg.in/chanxuehong/wechat.v2"
   packages = [
     "internal/debug/api",
+    "internal/debug/api/retry",
+    "internal/debug/callback",
     "internal/util",
+    "mp/core",
+    "mp/jssdk",
     "mp/oauth2",
     "oauth2",
     "util"
@@ -131,6 +141,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "6da928065d802af825936116445d0786992686fc99a7ae985334ac65572441d0"
+  inputs-digest = "b43c4a10720925c352f68cd4bafce71f0f803dc9b805e73daf6178ad4a27213c"
   solver-name = "gps-cdcl"
   solver-version = 1

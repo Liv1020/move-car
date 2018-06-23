@@ -12,4 +12,4 @@ db:
 wechat:
   appid: wx351aab24bd75e0ab
   appsecret: fe53187244f178a7a4ee817599107e00
-  oauthurl: http://localhost:8080/user/code
+  oauthurl: http://mc.liv1020.com/oauth/code

@@ -15,6 +15,6 @@ func ResponseSuccess(c *gin.Context, data interface{}) {
 func ResponseError(c *gin.Context, code int, err error) {
 	c.JSON(200, gin.H{
 		"status":  code,
-		"message": err,
+		"message": err.Error(),
 	})
 }

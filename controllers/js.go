@@ -25,10 +25,10 @@ func (t *js) Config(c *gin.Context) {
 	wechat := components.App.Config.Wechat
 	now := time.Now()
 	conf := &config{
-		appId:     wechat.AppID,
-		timestamp: fmt.Sprintf("%d", now.Unix()),
-		nonceStr:  randomString(12, "0aA"),
-		signature: "",
+		AppId:     wechat.AppID,
+		Timestamp: fmt.Sprintf("%d", now.Unix()),
+		NonceStr:  randomString(12, "0aA"),
+		Signature: "",
 	}
 
 	as := core.NewDefaultAccessTokenServer(wechat.AppID, wechat.AppSecret, nil)
@@ -43,7 +43,7 @@ func (t *js) Config(c *gin.Context) {
 		return
 	}
 
-	conf.signature = jssdk.WXConfigSign(ticket, conf.nonceStr, conf.timestamp, "")
+	conf.Signature = jssdk.WXConfigSign(ticket, conf.NonceStr, conf.Timestamp, "")
 
 	components.ResponseSuccess(c, conf)
 }
@@ -80,8 +80,8 @@ func randomString(randLength int, randType string) (result string) {
 }
 
 type config struct {
-	appId     string
-	timestamp string
-	nonceStr  string
-	signature string
+	AppId     string `json:"app_id"`
+	Timestamp string `json:"timestamp"`
+	NonceStr  string `json:"nonce_str"`
+	Signature string `json:"signature"`
 }

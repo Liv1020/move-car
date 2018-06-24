@@ -7,18 +7,10 @@ import (
 
 	"os"
 
+	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/configor"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-)
-
-const (
-	// DEV DEV
-	DEV = "dev"
-	// TEST test
-	TEST = "test"
-	// PROD prod
-	PROD = "prod"
 )
 
 type app struct {
@@ -29,7 +21,7 @@ type app struct {
 
 // Config Config
 type Config struct {
-	Env  string
+	Mode string
 	Port int
 	DB   struct {
 		Host     string
@@ -66,6 +58,7 @@ func init() {
 	if err := configor.Load(App.Config, "conf/app.yml"); err != nil {
 		panic(err)
 	}
+	gin.SetMode(App.Config.Mode)
 
 	App.Logger = log.New(os.Stdout, "[App]", log.LstdFlags)
 
@@ -87,7 +80,7 @@ func init() {
 	App.db.DB().SetMaxIdleConns(cdb.MaxIdle)
 	App.db.DB().SetMaxOpenConns(cdb.MaxOpen)
 
-	if App.Config.Env != PROD {
+	if App.Config.Mode != gin.ReleaseMode {
 		App.db.LogMode(true)
 	}
 }

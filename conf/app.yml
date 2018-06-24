@@ -1,5 +1,5 @@
 port: 8080
-env: dev
+mode: debug
 db:
   host: localhost
   port: 3306

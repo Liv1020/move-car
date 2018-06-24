@@ -25,6 +25,7 @@ func RegisterRouter(router *gin.Engine) {
 	{
 		qr.GET("/view", controllers.QrCode.View)
 		qr.POST("/create", controllers.QrCode.Create)
+		qr.GET("/search", controllers.QrCode.Search)
 	}
 
 	js := router.Group("/js")

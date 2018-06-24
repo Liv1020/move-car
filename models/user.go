@@ -14,7 +14,4 @@ type User struct {
 	HeadImageUrl string `gorm:"column:head_image_url"`
 	Mobile       string `gorm:"column:mobile"`
 	PlateNumber  string `gorm:"column:plate_number"`
-
-	QrCodes  []*Qrcode
-	SmsCodes []*SmsCode
 }

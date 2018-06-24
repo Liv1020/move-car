@@ -15,5 +15,6 @@ type User struct {
 	Mobile       string `gorm:"column:mobile"`
 	PlateNumber  string `gorm:"column:plate_number"`
 
-	QrCodes []*Qrcode
+	QrCodes  []*Qrcode
+	SmsCodes []*SmsCode
 }

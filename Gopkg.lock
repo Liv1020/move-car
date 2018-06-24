@@ -27,6 +27,22 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/denverdino/aliyungo"
+  packages = [
+    "common",
+    "sms",
+    "util"
+  ]
+  revision = "a854445ff36db2497a5863dc34e4c866ace022e4"
+
+[[projects]]
+  name = "github.com/gin-contrib/cors"
+  packages = ["."]
+  revision = "cf4846e6a636a76237a28d9286f163c132e841bc"
+  version = "v1.2"
+
+[[projects]]
+  branch = "master"
   name = "github.com/gin-contrib/sse"
   packages = ["."]
   revision = "22d885f9ecc78bf4ee5d72b937e4bbcdc58e8cae"
@@ -75,28 +91,10 @@
   revision = "04140366298a54a039076d798123ffa108fff46c"
 
 [[projects]]
-  name = "github.com/json-iterator/go"
-  packages = ["."]
-  revision = "ca39e5af3ece67bbcda3d0f4f56a8e24d9f2dad4"
-  version = "1.1.3"
-
-[[projects]]
   name = "github.com/mattn/go-isatty"
   packages = ["."]
   revision = "0360b2af4f38e8d38c7fce2a9f4e702702d73a39"
   version = "v0.0.3"
-
-[[projects]]
-  name = "github.com/modern-go/concurrent"
-  packages = ["."]
-  revision = "bacd9c7ef1dd9b15be4a9909b8ac7a4e313eec94"
-  version = "1.0.3"
-
-[[projects]]
-  name = "github.com/modern-go/reflect2"
-  packages = ["."]
-  revision = "1df9eeb2bb81f327b96228865c5687bc2194af3f"
-  version = "1.0.0"
 
 [[projects]]
   name = "github.com/ugorji/go"
@@ -153,6 +151,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "4824ed2b0b332b44ff0722f06b35d6ebe3714a088ee706fea532e8e899cd3dc9"
+  inputs-digest = "47a6b8158910e9620c98ee20a8ad1ce5ada02f7e5a84ad83debbba5d2c871de6"
   solver-name = "gps-cdcl"
   solver-version = 1

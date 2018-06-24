@@ -1,9 +1,14 @@
 package controllers
 
 import (
+	"errors"
+
+	"time"
+
 	"github.com/Liv1020/move-car/components"
 	"github.com/Liv1020/move-car/models"
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 )
 
 type user struct{}
@@ -11,8 +16,8 @@ type user struct{}
 // User 用户
 var User = user{}
 
-// Create 注册
-func (t *user) Create(c *gin.Context) {
+// Update Update
+func (t *user) Update(c *gin.Context) {
 	auth := components.GetAuthFromClaims(c)
 
 	form := new(form)
@@ -22,10 +27,15 @@ func (t *user) Create(c *gin.Context) {
 		return
 	}
 
+	if err := form.Validate(); err != nil {
+		components.ResponseError(c, 1, err)
+		return
+	}
+
 	db := components.App.DB()
 
 	qr := new(models.Qrcode)
-	if err := db.Where("id = ?", form.QrCodeID).Last(qr).Error; err != nil {
+	if err := db.Where("id = ?", form.QrCode).Last(qr).Error; err != nil {
 		components.ResponseError(c, 1, err)
 		return
 	}
@@ -53,7 +63,42 @@ func (t *user) Create(c *gin.Context) {
 }
 
 type form struct {
-	QrCodeID    int    `json:"qr_code_id"`
+	QrCode      string `json:"qr_code"`
 	Mobile      string `json:"mobile"`
 	PlateNumber string `json:"plate_number"`
+	Code        string `json:"code"`
+}
+
+// Validate Validate
+func (t *form) Validate() error {
+	if t.Mobile == "" {
+		return errors.New("手机号码不能为空")
+	}
+	if t.Code == "" {
+		return errors.New("验证码不能为空")
+	}
+	db := components.App.DB()
+	sc := new(models.SmsCode)
+	if err := db.Where("mobile = ? AND expired_at > ? AND is_valid = 0", t.Mobile, time.Now()).Last(sc).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return errors.New("请重新发送验证")
+		}
+
+		return err
+	}
+	if sc.Code != t.Code {
+		return errors.New("验证码错误")
+	}
+	sc.IsValid = 1
+	if err := db.Save(sc).Error; err != nil {
+		return err
+	}
+	if t.PlateNumber == "" {
+		return errors.New("车牌号不能为空")
+	}
+	if t.QrCode == "" {
+		return errors.New("二维码不能为空")
+	}
+
+	return nil
 }

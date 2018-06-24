@@ -11,20 +11,19 @@ func RegisterRouter(router *gin.Engine) {
 	auth := router.Group("oauth")
 	{
 		auth.GET("/index", controllers.Oauth.Index)
-		auth.GET("/code", controllers.Oauth.Code)
+		auth.POST("/code", controllers.Oauth.Code)
 	}
-
-	router.GET("/")
 
 	user := router.Group("/user")
 	user.Use(middlewares.JwtMiddleware.MiddlewareFunc())
 	{
-		user.POST("/create", controllers.User.Create)
+		user.POST("/update", controllers.User.Update)
 	}
 
 	qr := router.Group("/qrcode")
 	qr.Use(middlewares.JwtMiddleware.MiddlewareFunc())
 	{
+		qr.GET("/view", controllers.QrCode.View)
 		qr.POST("/create", controllers.QrCode.Create)
 	}
 
@@ -38,5 +37,6 @@ func RegisterRouter(router *gin.Engine) {
 	aliyun.Use(middlewares.JwtMiddleware.MiddlewareFunc())
 	{
 		aliyun.POST("/call", controllers.Aliyun.Call)
+		aliyun.POST("/sms", controllers.Aliyun.Sms)
 	}
 }

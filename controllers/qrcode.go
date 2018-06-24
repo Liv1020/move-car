@@ -25,3 +25,27 @@ func (t *qrcode) Create(c *gin.Context) {
 
 	components.ResponseSuccess(c, qr)
 }
+
+// View View
+func (t *qrcode) View(c *gin.Context) {
+	db := components.App.DB()
+	qrID := c.Query("qr")
+
+	qr := new(models.Qrcode)
+	if err := db.Where("id = ?", qrID).Last(qr).Error; err != nil {
+		components.ResponseError(c, 1, err)
+		return
+	}
+
+	out := &qrCode{
+		ID:     qr.ID,
+		UserID: qr.UserID,
+	}
+
+	components.ResponseSuccess(c, out)
+}
+
+type qrCode struct {
+	ID     uint `json:"id"`
+	UserID uint `json:"user_id"`
+}

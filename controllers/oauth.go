@@ -3,12 +3,13 @@ package controllers
 import (
 	"fmt"
 
+	"time"
+
 	"github.com/Liv1020/move-car/components"
 	"github.com/Liv1020/move-car/middlewares"
 	"github.com/Liv1020/move-car/models"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
-	"github.com/json-iterator/go"
 	mpoauth "gopkg.in/chanxuehong/wechat.v2/mp/oauth2"
 	"gopkg.in/chanxuehong/wechat.v2/oauth2"
 )
@@ -22,8 +23,7 @@ var Oauth = oauth{}
 func (t oauth) Index(c *gin.Context) {
 	conf := components.App.Config
 
-	callUrl := conf.Wechat.OAuthUrl
-	fmt.Println(callUrl)
+	callUrl := "http://mc.liv1020.com/home?qr=6" // c.Request.Referer()
 	authUrl := mpoauth.AuthCodeURL(conf.Wechat.AppID, callUrl, "snsapi_userinfo", "STATE")
 
 	c.Redirect(302, authUrl)
@@ -31,7 +31,13 @@ func (t oauth) Index(c *gin.Context) {
 
 // Code Code
 func (t oauth) Code(c *gin.Context) {
-	code := c.Query("code")
+	type params struct {
+		Code string
+	}
+
+	form := new(params)
+	c.BindJSON(form)
+
 	conf := components.App.Config
 
 	p := mpoauth.NewEndpoint(conf.Wechat.AppID, conf.Wechat.AppSecret)
@@ -39,7 +45,7 @@ func (t oauth) Code(c *gin.Context) {
 		Endpoint: p,
 	}
 
-	token, err := cli.ExchangeToken(code)
+	token, err := cli.ExchangeToken(form.Code)
 	if err != nil {
 		components.ResponseError(c, 1, err)
 		return
@@ -73,18 +79,17 @@ func (t oauth) Code(c *gin.Context) {
 		return
 	}
 
-	var json = jsoniter.ConfigCompatibleWithStandardLibrary
-	iby, err := json.Marshal(&info)
-	if err != nil {
-		components.ResponseError(c, 1, err)
-		return
-	}
+	now := time.Now()
+	at := new(appToken)
+	at.Token = middlewares.JwtMiddleware.TokenGenerator(fmt.Sprintf("%d", u.ID))
+	at.ExpiredAt = int(now.Add(2*time.Hour - 30).Unix())
+	at.User = u
 
-	c.SetCookie("wechat", string(iby), int(token.ExpiresIn), "", "", false, false)
+	components.ResponseSuccess(c, at)
+}
 
-	// 设置jwt token
-	appToken := middlewares.JwtMiddleware.TokenGenerator(fmt.Sprintf("%d", u.ID))
-	c.SetCookie("token", appToken, int(token.ExpiresIn), "", "", false, false)
-
-	c.Redirect(302, "http://mc.liv1020.com:8080")
+type appToken struct {
+	Token     string       `json:"token"`
+	ExpiredAt int          `json:"expired_at"`
+	User      *models.User `json:"user"`
 }

@@ -38,8 +38,7 @@ type Config struct {
 		AppSecret string
 		OAuthUrl  string
 	}
-	FrontedUrl string
-	Aliyun     struct {
+	Aliyun struct {
 		AccessKeyId     string
 		AccessKeySecret string
 	}

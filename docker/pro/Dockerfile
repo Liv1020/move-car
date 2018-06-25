@@ -21,7 +21,7 @@ LABEL pavle=523260513@qq.com
 RUN mkdir -p /usr/local/server
 WORKDIR /usr/local/server
 
-COPY --from=build /go/src/github.com/Liv1020/move-car/conf ./conf/
+VOLUME ./conf
 COPY --from=build /go/src/github.com/Liv1020/move-car/move-car .
 
 CMD ["/usr/local/server/move-car"]

@@ -13,7 +13,6 @@ wechat:
   appid: wx351aab24bd75e0ab
   appsecret: fe53187244f178a7a4ee817599107e00
   oauthurl: http://mc.liv1020.com/oauth/code
-frontedurl: http://localhost:8010
 aliyun:
   accesskeyid: LTAIQk3xt3OM3qIv
   accesskeysecret: u57Niqa807wkxiXBNOP8Vkk9CbzmBX

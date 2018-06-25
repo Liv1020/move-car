@@ -23,7 +23,7 @@ var Oauth = oauth{}
 func (t oauth) Index(c *gin.Context) {
 	conf := components.App.Config
 
-	callUrl := "http://mc.liv1020.com/home?qr=6" // c.Request.Referer()
+	callUrl := c.Request.Referer()
 	authUrl := mpoauth.AuthCodeURL(conf.Wechat.AppID, callUrl, "snsapi_userinfo", "STATE")
 
 	c.Redirect(302, authUrl)

@@ -1,11 +1,11 @@
 port: 8080
 mode: debug
 db:
-  host: 47.75.44.50
-  port: 5306
-  user: root
-  password: Lpf6480558
-  database: move
+  host: 10.80.2.227
+  port: 3306
+  user: application
+  password: 123456
+  database: application
   charset: utf8mb4
   maxidle: 10
   maxopen: 20

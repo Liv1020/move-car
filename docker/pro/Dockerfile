@@ -1,5 +1,7 @@
-FROM golang:latest AS build
+FROM golang:1.10.3-alpine3.7 AS build
 LABEL pavle=523260513@qq.com
+
+RUN apk add --no-cache git openssh
 
 WORKDIR $GOPATH/src/
 
@@ -18,10 +20,12 @@ RUN cd $GOPATH/src/github.com/Liv1020/move-car/ \
 FROM alpine:latest
 LABEL pavle=523260513@qq.com
 
+RUN apk add --no-cache ca-certificates
+
 RUN mkdir -p /usr/local/server
 WORKDIR /usr/local/server
 
-VOLUME ./conf
+VOLUME /usr/local/server/conf
 COPY --from=build /go/src/github.com/Liv1020/move-car/move-car .
 
 CMD ["/usr/local/server/move-car"]

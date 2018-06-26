@@ -9,12 +9,15 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/sirupsen/logrus"
+	"gopkg.in/chanxuehong/wechat.v2/mp/core"
+	"gopkg.in/chanxuehong/wechat.v2/util"
 )
 
 type app struct {
 	db     *gorm.DB
 	config *Config
 	logger *logrus.Logger
+	wecaht *core.Client
 }
 
 // App App
@@ -33,6 +36,11 @@ func (t *app) Config() *Config {
 // Logger Logger
 func (t *app) Logger() *logrus.Logger {
 	return t.logger
+}
+
+// WechatClient WechatClient
+func (t *app) WechatClient() *core.Client {
+	return t.wecaht
 }
 
 func init() {
@@ -72,4 +80,9 @@ func init() {
 		App.db.LogMode(true)
 		App.db.SetLogger(dbLog)
 	}
+
+	wx := App.Config().Wechat
+	http := util.DefaultHttpClient
+	srv := core.NewDefaultAccessTokenServer(wx.AppID, wx.AppSecret, http)
+	App.wecaht = core.NewClient(srv, http)
 }

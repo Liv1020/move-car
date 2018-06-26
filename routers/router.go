@@ -39,4 +39,6 @@ func RegisterRouter(router *gin.Engine) {
 		aliyun.POST("/call", controllers.Aliyun.Call)
 		aliyun.POST("/sms", controllers.Aliyun.Sms)
 	}
+
+	router.GET("/ws", controllers.WS.Handle)
 }

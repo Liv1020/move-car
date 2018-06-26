@@ -15,9 +15,11 @@ type Config struct {
 		MaxOpen  int    `default:"100"`
 	}
 	Wechat struct {
-		AppID     string `required:"true"`
-		AppSecret string `required:"true"`
-		OAuthUrl  string `required:"true"`
+		AppID      string `required:"true"`
+		AppSecret  string `required:"true"`
+		OAuthUrl   string `required:"true"`
+		TemplateID string `required:"true"`
+		ConfirmUrl string `required:"true"`
 	}
 	Aliyun struct {
 		AccessKeyId     string `required:"true"`

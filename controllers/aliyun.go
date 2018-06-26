@@ -78,8 +78,8 @@ func (t *aliyun) Sms(c *gin.Context) {
 
 	res, err := cli.SendSms(&sms.SendSmsArgs{
 		PhoneNumbers:  f.Mobile,
-		SignName:      "阿里云短信测试专用",
-		TemplateCode:  "SMS_137875084",
+		SignName:      conf.Vms.SignName,
+		TemplateCode:  conf.Vms.TemplateCode,
 		TemplateParam: `{"code": "` + code + `"}`,
 	})
 	if err != nil {

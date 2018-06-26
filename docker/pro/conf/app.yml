@@ -16,3 +16,6 @@ wechat:
 aliyun:
   accesskeyid: LTAIQk3xt3OM3qIv
   accesskeysecret: u57Niqa807wkxiXBNOP8Vkk9CbzmBX
+  vms:
+    signname: 阿里云短信测试专用
+    templatecode: SMS_137875084

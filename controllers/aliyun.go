@@ -36,7 +36,7 @@ func (t *aliyun) Call(c *gin.Context) {
 		return
 	}
 
-	conf := components.App.Config.Aliyun
+	conf := components.App.Config().Aliyun
 
 	cli := vms.NewDYVmsClient(conf.AccessKeyId, conf.AccessKeySecret)
 	res, err := cli.SendVms(&vms.SendVmsArgs{
@@ -62,7 +62,7 @@ func (t *aliyun) Call(c *gin.Context) {
 
 // Sms Sms
 func (t *aliyun) Sms(c *gin.Context) {
-	conf := components.App.Config.Aliyun
+	conf := components.App.Config().Aliyun
 	db := components.App.DB()
 
 	cli := sms.NewDYSmsClient(conf.AccessKeyId, conf.AccessKeySecret)

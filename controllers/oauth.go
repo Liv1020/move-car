@@ -21,7 +21,7 @@ var Oauth = oauth{}
 
 // Index Index
 func (t oauth) Index(c *gin.Context) {
-	conf := components.App.Config
+	conf := components.App.Config()
 
 	callUrl := c.Request.Referer()
 	authUrl := mpoauth.AuthCodeURL(conf.Wechat.AppID, callUrl, "snsapi_userinfo", "STATE")
@@ -38,7 +38,7 @@ func (t oauth) Code(c *gin.Context) {
 	form := new(params)
 	c.BindJSON(form)
 
-	conf := components.App.Config
+	conf := components.App.Config()
 
 	p := mpoauth.NewEndpoint(conf.Wechat.AppID, conf.Wechat.AppSecret)
 	cli := &oauth2.Client{

@@ -22,7 +22,7 @@ var JS = js{}
 
 // Config Config
 func (t *js) Config(c *gin.Context) {
-	wechat := components.App.Config.Wechat
+	wechat := components.App.Config().Wechat
 	now := time.Now()
 	conf := &config{
 		AppId:     wechat.AppID,

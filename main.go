@@ -19,5 +19,5 @@ func main() {
 	middlewares.RegisterMiddleware(r)
 	routers.RegisterRouter(r)
 
-	r.Run(fmt.Sprintf(":%d", components.App.Config.Port))
+	r.Run(fmt.Sprintf(":%d", components.App.Config().Port))
 }

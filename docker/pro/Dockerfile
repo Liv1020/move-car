@@ -3,10 +3,10 @@ LABEL pavle=523260513@qq.com
 
 RUN apk add --no-cache git openssh
 
-WORKDIR $GOPATH/src/
-
 COPY .ssh /root/.ssh
 RUN chmod 0600 /root/.ssh/id_rsa
+
+WORKDIR $GOPATH/src/
 
 RUN mkdir -p $GOPATH/src/github.com/Liv1020/ \
     && cd github.com/Liv1020/ \

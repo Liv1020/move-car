@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/Liv1020/move-car/components"
+	"github.com/Liv1020/move-car/middlewares"
 	"github.com/Liv1020/move-car/models"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -18,7 +19,7 @@ var User = user{}
 
 // Update Update
 func (t *user) Update(c *gin.Context) {
-	auth := components.GetAuthFromClaims(c)
+	auth := middlewares.JwtAuthFromClaims(c)
 
 	form := new(form)
 	err := c.BindJSON(form)

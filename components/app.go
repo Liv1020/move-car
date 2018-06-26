@@ -17,31 +17,6 @@ type app struct {
 	Logger *logrus.Logger
 }
 
-// Config Config
-type Config struct {
-	Mode string
-	Port int
-	DB   struct {
-		Host     string
-		Port     int
-		User     string
-		Password string
-		Database string
-		Charset  string
-		MaxIdle  int
-		MaxOpen  int
-	}
-	Wechat struct {
-		AppID     string
-		AppSecret string
-		OAuthUrl  string
-	}
-	Aliyun struct {
-		AccessKeyId     string
-		AccessKeySecret string
-	}
-}
-
 // App App
 var App = &app{}
 

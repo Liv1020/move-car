@@ -14,6 +14,19 @@ import (
 // JwtMiddleware JwtMiddleware
 var JwtMiddleware *jwt.GinJWTMiddleware
 
+// JwtAuthFromClaims JwtAuthFromClaims
+func JwtAuthFromClaims(c *gin.Context) *models.User {
+	claims := jwt.ExtractClaims(c)
+	uid := claims["id"]
+
+	db := components.App.DB()
+
+	user := new(models.User)
+	db.Where("id = ?", uid).Last(user)
+
+	return user
+}
+
 func init() {
 	// the jwt middleware
 	JwtMiddleware = &jwt.GinJWTMiddleware{

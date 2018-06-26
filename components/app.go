@@ -49,7 +49,8 @@ func init() {
 
 	cdb := App.config.DB
 	args := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&timeout=3s&parseTime=true&loc=Local", cdb.User, cdb.Password, cdb.Host, cdb.Port, cdb.Database, cdb.Charset)
-	App.logger.Infof("数据库连接：%s", args)
+	dbLog := &logger.DbLogger{}
+	dbLog.Print("DB:", args)
 
 	var err error
 	if App.db, err = gorm.Open("mysql", args); err != nil {
@@ -62,12 +63,13 @@ func init() {
 	App.db.LogMode(false)
 	// 跳过关联保存
 	App.db.Set("gorm:save_associations", false)
-
+	// 最大空闲链接
 	App.db.DB().SetMaxIdleConns(cdb.MaxIdle)
+	// 最大链接数
 	App.db.DB().SetMaxOpenConns(cdb.MaxOpen)
 
 	if App.config.Mode != gin.ReleaseMode {
 		App.db.LogMode(true)
-		App.db.SetLogger(&logger.DbLogger{})
+		App.db.SetLogger(dbLog)
 	}
 }

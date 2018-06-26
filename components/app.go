@@ -3,20 +3,18 @@ package components
 import (
 	"fmt"
 
-	"log"
-
-	"os"
-
+	"github.com/Liv1020/move-car/components/logger"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/configor"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"github.com/sirupsen/logrus"
 )
 
 type app struct {
 	db     *gorm.DB
 	Config *Config
-	Logger *log.Logger
+	Logger *logrus.Logger
 }
 
 // Config Config
@@ -59,10 +57,14 @@ func init() {
 	}
 	gin.SetMode(App.Config.Mode)
 
-	App.Logger = log.New(os.Stdout, "[App]", log.LstdFlags)
+	App.Logger = logrus.New()
+	App.Logger.Formatter = &logger.Formatter{
+		Prefix: "GIN-app",
+	}
 
 	cdb := App.Config.DB
 	args := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&timeout=3s&parseTime=true&loc=Local", cdb.User, cdb.Password, cdb.Host, cdb.Port, cdb.Database, cdb.Charset)
+	App.Logger.Infof("数据库连接：%s", args)
 
 	var err error
 	if App.db, err = gorm.Open("mysql", args); err != nil {
@@ -81,5 +83,6 @@ func init() {
 
 	if App.Config.Mode != gin.ReleaseMode {
 		App.db.LogMode(true)
+		App.db.SetLogger(&logger.DbLogger{})
 	}
 }

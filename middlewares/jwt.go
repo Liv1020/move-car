@@ -17,8 +17,8 @@ var JwtMiddleware *jwt.GinJWTMiddleware
 func init() {
 	// the jwt middleware
 	JwtMiddleware = &jwt.GinJWTMiddleware{
-		Realm:      "test zone",
-		Key:        []byte("secret key"),
+		Realm:      "Move Car",
+		Key:        []byte("b24bd75e0ab"),
 		Timeout:    time.Hour,
 		MaxRefresh: time.Hour,
 		Authorizator: func(userID string, c *gin.Context) bool {

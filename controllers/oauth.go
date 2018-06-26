@@ -19,16 +19,6 @@ type oauth struct{}
 // Oauth 用户
 var Oauth = oauth{}
 
-// Index Index
-func (t oauth) Index(c *gin.Context) {
-	conf := components.App.Config()
-
-	callUrl := c.Request.Referer()
-	authUrl := mpoauth.AuthCodeURL(conf.Wechat.AppID, callUrl, "snsapi_userinfo", "STATE")
-
-	c.Redirect(302, authUrl)
-}
-
 // Code Code
 func (t oauth) Code(c *gin.Context) {
 	type params struct {

@@ -10,7 +10,6 @@ import (
 func RegisterRouter(router *gin.Engine) {
 	auth := router.Group("oauth")
 	{
-		auth.GET("/index", controllers.Oauth.Index)
 		auth.POST("/code", controllers.Oauth.Code)
 	}
 

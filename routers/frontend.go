@@ -10,8 +10,13 @@ import (
 func registerFrontend(router *gin.Engine) {
 	f := router.Group("/frontend")
 	{
-		f.POST("/oauth/code", frontend.Oauth.Code)
 		f.GET("/ws", frontend.WS.Handle)
+
+		wechat := f.Group("/wechat")
+		{
+			wechat.POST("/oauth", frontend.Wechat.Oauth)
+			wechat.POST("/server", frontend.Wechat.Server)
+		}
 
 		user := f.Group("/user")
 		user.Use(middlewares.JwtMiddleware.MiddlewareFunc())

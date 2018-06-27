@@ -15,6 +15,8 @@ wechat:
   oauthurl: http://mc.liv1020.com/oauth/code
   templateid: xxxxxxx
   confirmurl: xxxxxxx
+  token: 244f178a7a4ee81
+  encodingaeskey: 8fwF7eV4J2kaC57ZDWYq9oiD35aM4ZYGdO3GR0chhxq
 aliyun:
   accesskeyid: LTAIQk3xt3OM3qIv
   accesskeysecret: u57Niqa807wkxiXBNOP8Vkk9CbzmBX

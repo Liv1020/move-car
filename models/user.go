@@ -2,6 +2,13 @@ package models
 
 import "github.com/jinzhu/gorm"
 
+const (
+	// SUBSCRIBE_NO 未关注
+	SUBSCRIBE_NO = 0
+	// SUBSCRIBE_YES 已关注
+	SUBSCRIBE_YES = 1
+)
+
 // User User
 type User struct {
 	gorm.Model
@@ -14,4 +21,5 @@ type User struct {
 	HeadImageUrl string `gorm:"column:head_image_url"`
 	Mobile       string `gorm:"column:mobile"`
 	PlateNumber  string `gorm:"column:plate_number"`
+	IsSubscribe  int    `gorm:"column:is_subscribe"`
 }

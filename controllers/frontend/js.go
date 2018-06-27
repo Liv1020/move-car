@@ -11,7 +11,6 @@ import (
 
 	"github.com/Liv1020/move-car/components"
 	"github.com/gin-gonic/gin"
-	"gopkg.in/chanxuehong/wechat.v2/mp/core"
 	"gopkg.in/chanxuehong/wechat.v2/mp/jssdk"
 )
 
@@ -31,9 +30,7 @@ func (t *js) Config(c *gin.Context) {
 		Signature: "",
 	}
 
-	as := core.NewDefaultAccessTokenServer(wechat.AppID, wechat.AppSecret, nil)
-
-	clt := core.NewClient(as, nil)
+	clt := components.App.WechatClient()
 
 	ts := jssdk.NewDefaultTicketServer(clt)
 
@@ -43,7 +40,7 @@ func (t *js) Config(c *gin.Context) {
 		return
 	}
 
-	conf.Signature = jssdk.WXConfigSign(ticket, conf.NonceStr, conf.Timestamp, "")
+	conf.Signature = jssdk.WXConfigSign(ticket, conf.NonceStr, conf.Timestamp, c.Request.Referer())
 
 	components.ResponseSuccess(c, conf)
 }

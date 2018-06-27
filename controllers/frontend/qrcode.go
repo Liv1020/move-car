@@ -1,4 +1,4 @@
-package controllers
+package frontend
 
 import (
 	"github.com/Liv1020/move-car/components"

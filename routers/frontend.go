@@ -15,7 +15,7 @@ func registerFrontend(router *gin.Engine) {
 		wechat := f.Group("/wechat")
 		{
 			wechat.POST("/oauth", frontend.Wechat.Oauth)
-			wechat.POST("/server", frontend.Wechat.Server)
+			wechat.Any("/server", frontend.Wechat.Server)
 		}
 
 		user := f.Group("/user")

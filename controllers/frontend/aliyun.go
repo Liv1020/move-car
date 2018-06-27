@@ -11,7 +11,6 @@ import (
 	"github.com/Liv1020/move-car/models"
 	"github.com/denverdino/aliyungo/sms"
 	"github.com/gin-gonic/gin"
-	"gopkg.in/chanxuehong/wechat.v2/mp/message/template"
 )
 
 type aliyun struct {
@@ -37,19 +36,19 @@ func (t *aliyun) Call(c *gin.Context) {
 		return
 	}
 
-	wx := components.App.Config().Wechat
-	co := components.App.WechatClient()
-	message := &template.TemplateMessage{
-		ToUser:     row.User.OpenID,
-		TemplateId: wx.TemplateID,
-		URL:        wx.ConfirmUrl,
-		Data:       []byte(`{}`),
-	}
-	_, err := template.Send(co, message)
-	if err != nil {
-		components.ResponseError(c, 1, err)
-		return
-	}
+	// wx := components.App.Config().Wechat
+	// co := components.App.WechatClient()
+	// message := &template.TemplateMessage{
+	// 	ToUser:     row.User.OpenID,
+	// 	TemplateId: wx.TemplateID,
+	// 	URL:        wx.ConfirmUrl,
+	// 	Data:       []byte(`{}`),
+	// }
+	// _, err := template.Send(co, message)
+	// if err != nil {
+	// 	components.ResponseError(c, 1, err)
+	// 	return
+	// }
 
 	conf := components.App.Config().Aliyun
 	cli := vms.NewDYVmsClient(conf.AccessKeyId, conf.AccessKeySecret)

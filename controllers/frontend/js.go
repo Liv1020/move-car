@@ -77,8 +77,8 @@ func randomString(randLength int, randType string) (result string) {
 }
 
 type config struct {
-	AppId     string `json:"app_id"`
+	AppId     string `json:"appId"`
 	Timestamp string `json:"timestamp"`
-	NonceStr  string `json:"nonce_str"`
+	NonceStr  string `json:"nonceStr"`
 	Signature string `json:"signature"`
 }

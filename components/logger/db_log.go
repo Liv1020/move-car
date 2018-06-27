@@ -23,7 +23,7 @@ func (t *DbLogger) Print(v ...interface{}) {
 
 func init() {
 	dbLog = logrus.New()
-	dbLog.Formatter = &DbFormatter{
+	dbLog.Formatter = &Formatter{
 		Prefix: "GIN-gorm",
 	}
 }

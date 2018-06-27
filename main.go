@@ -12,11 +12,8 @@ import (
 func main() {
 	r := gin.New()
 
-	r.Use(gin.Logger())
-
-	r.Use(gin.Recovery())
-
 	middlewares.RegisterMiddleware(r)
+
 	routers.RegisterRouter(r)
 
 	r.Run(fmt.Sprintf(":%d", components.App.Config().Port))

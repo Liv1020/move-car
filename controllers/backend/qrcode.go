@@ -1,4 +1,4 @@
-package frontend
+package backend
 
 import (
 	"github.com/Liv1020/move-car/components"
@@ -14,28 +14,37 @@ var QrCode = qrcode{}
 
 // Search Search
 func (t *qrcode) Search(c *gin.Context) {
+	type search struct {
+		components.Page
+	}
+
+	type list struct {
+		Data  []*models.Qrcode `json:"data"`
+		Total int              `json:"total"`
+	}
+
 	s := new(search)
 	c.ShouldBindWith(s, binding.JSON)
 
 	db := components.App.DB()
 
-	list := new(list)
-	if err := db.Model(&models.Qrcode{}).Count(&list.Total).Error; err != nil {
+	out := new(list)
+	if err := db.Model(&models.Qrcode{}).Count(&out.Total).Error; err != nil {
 		components.ResponseError(c, 1, err)
 		return
 	}
 
-	if list.Total == 0 {
-		components.ResponseSuccess(c, list)
+	if out.Total == 0 {
+		components.ResponseSuccess(c, out)
 		return
 	}
 
-	if err := db.Preload("User").Offset(s.GetOffset()).Limit(s.GetLimit()).Find(&list.Data).Error; err != nil {
+	if err := db.Preload("User").Offset(s.GetOffset()).Limit(s.GetLimit()).Find(&out.Data).Error; err != nil {
 		components.ResponseError(c, 1, err)
 		return
 	}
 
-	components.ResponseSuccess(c, list)
+	components.ResponseSuccess(c, out)
 }
 
 // Create 创建
@@ -79,13 +88,4 @@ func (t *qrcode) View(c *gin.Context) {
 type qrCode struct {
 	ID     uint `json:"id"`
 	UserID uint `json:"user_id"`
-}
-
-type search struct {
-	components.Page
-}
-
-type list struct {
-	Data  []*models.Qrcode `json:"data"`
-	Total int              `json:"total"`
 }

@@ -7,6 +7,10 @@ import (
 
 // RegisterMiddleware RegisterMiddleware
 func RegisterMiddleware(router *gin.Engine) {
+	router.Use(gin.Logger())
+
+	router.Use(gin.Recovery())
+
 	router.Use(cors.New(cors.Config{
 		AllowAllOrigins:  true,
 		AllowMethods:     []string{"GET", "POST", "PUT", "HEAD", "OPTIONS"},

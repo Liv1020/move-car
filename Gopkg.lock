@@ -147,6 +147,7 @@
     "mp/jssdk",
     "mp/message/template",
     "mp/oauth2",
+    "mp/user",
     "oauth2",
     "util"
   ]
@@ -173,6 +174,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "c084133291db893676db31fc86e3073db74915c721b292b586f7b22f3760ec5b"
+  inputs-digest = "f6fab486285d8842e3c52b64970bda8429a0122f190e23f8226f223c938a1d0f"
   solver-name = "gps-cdcl"
   solver-version = 1

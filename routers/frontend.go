@@ -21,11 +21,12 @@ func registerFrontend(router *gin.Engine) {
 		user := f.Group("/user")
 		user.Use(middlewares.JwtMiddleware.MiddlewareFunc())
 		{
+			user.POST("/is-subscribe", frontend.User.IsSubscribe)
 			user.POST("/update", frontend.User.Update)
 		}
 
 		qr := f.Group("/qrcode")
-		qr.Use(middlewares.JwtMiddleware.MiddlewareFunc())
+		// qr.Use(middlewares.JwtMiddleware.MiddlewareFunc())
 		{
 			qr.GET("/view", frontend.QrCode.View)
 			qr.POST("/create", frontend.QrCode.Create)

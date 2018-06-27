@@ -10,10 +10,12 @@ import (
 	"github.com/Liv1020/move-car/components"
 	"github.com/Liv1020/move-car/middlewares"
 	"github.com/Liv1020/move-car/models"
+	"github.com/Liv1020/move-car/resources"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"gopkg.in/chanxuehong/wechat.v2/mp/core"
-	mpoauth "gopkg.in/chanxuehong/wechat.v2/mp/oauth2"
+	mpOauth "gopkg.in/chanxuehong/wechat.v2/mp/oauth2"
+	mpUser "gopkg.in/chanxuehong/wechat.v2/mp/user"
 	"gopkg.in/chanxuehong/wechat.v2/oauth2"
 )
 
@@ -33,7 +35,7 @@ func (t *wechat) Oauth(c *gin.Context) {
 
 	conf := components.App.Config()
 
-	p := mpoauth.NewEndpoint(conf.Wechat.AppID, conf.Wechat.AppSecret)
+	p := mpOauth.NewEndpoint(conf.Wechat.AppID, conf.Wechat.AppSecret)
 	cli := &oauth2.Client{
 		Endpoint: p,
 	}
@@ -44,7 +46,13 @@ func (t *wechat) Oauth(c *gin.Context) {
 		return
 	}
 
-	info, err := mpoauth.GetUserInfo(token.AccessToken, token.OpenId, mpoauth.LanguageZhCN, nil)
+	info, err := mpOauth.GetUserInfo(token.AccessToken, token.OpenId, mpOauth.LanguageZhCN, nil)
+	if err != nil {
+		components.ResponseError(c, 1, err)
+		return
+	}
+
+	wu, err := mpUser.Get(components.App.WechatClient(), info.OpenId, mpOauth.LanguageZhCN)
 	if err != nil {
 		components.ResponseError(c, 1, err)
 		return
@@ -67,22 +75,23 @@ func (t *wechat) Oauth(c *gin.Context) {
 	u.Province = info.Province
 	u.Country = info.Country
 	u.HeadImageUrl = info.HeadImageURL
+	u.IsSubscribe = wu.IsSubscriber
 	if err := db.Save(u).Error; err != nil {
 		components.ResponseError(c, 1, err)
 		return
 	}
 
 	type appToken struct {
-		Token     string       `json:"token"`
-		ExpiredAt int          `json:"expired_at"`
-		User      *models.User `json:"user"`
+		Token     string          `json:"token"`
+		ExpiredAt int             `json:"expired_at"`
+		User      *resources.User `json:"user"`
 	}
 
 	now := time.Now()
 	at := new(appToken)
 	at.Token = middlewares.JwtMiddleware.TokenGenerator(fmt.Sprintf("%d", u.ID))
 	at.ExpiredAt = int(now.Add(2*time.Hour - 30).Unix())
-	at.User = u
+	at.User = resources.NewUser(u)
 
 	components.ResponseSuccess(c, at)
 }

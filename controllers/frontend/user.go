@@ -8,8 +8,11 @@ import (
 	"github.com/Liv1020/move-car/components"
 	"github.com/Liv1020/move-car/middlewares"
 	"github.com/Liv1020/move-car/models"
+	"github.com/Liv1020/move-car/resources"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
+	mpOauth "gopkg.in/chanxuehong/wechat.v2/mp/oauth2"
+	mpUser "gopkg.in/chanxuehong/wechat.v2/mp/user"
 )
 
 type user struct{}
@@ -28,7 +31,7 @@ func (t *user) Update(c *gin.Context) {
 		return
 	}
 
-	if err := form.Validate(); err != nil {
+	if err := form.validate(); err != nil {
 		components.ResponseError(c, 1, err)
 		return
 	}
@@ -63,6 +66,32 @@ func (t *user) Update(c *gin.Context) {
 	components.ResponseSuccess(c, u)
 }
 
+// IsSubscribe IsSubscribe
+func (t *user) IsSubscribe(c *gin.Context) {
+	auth := middlewares.JwtAuthFromClaims(c)
+	db := components.App.DB()
+
+	u := new(models.User)
+	if err := db.Where("openid = ?", auth.OpenID).Last(u).Error; err != nil {
+		components.ResponseError(c, 1, err)
+		return
+	}
+
+	wu, err := mpUser.Get(components.App.WechatClient(), auth.OpenID, mpOauth.LanguageZhCN)
+	if err != nil {
+		components.ResponseError(c, 1, err)
+		return
+	}
+
+	u.IsSubscribe = wu.IsSubscriber
+	if err := db.Save(u).Error; err != nil {
+		components.ResponseError(c, 1, err)
+		return
+	}
+
+	components.ResponseSuccess(c, resources.NewUser(u))
+}
+
 type form struct {
 	QrCode      string `json:"qr_code"`
 	Mobile      string `json:"mobile"`
@@ -71,7 +100,7 @@ type form struct {
 }
 
 // Validate Validate
-func (t *form) Validate() error {
+func (t *form) validate() error {
 	if t.Mobile == "" {
 		return errors.New("手机号码不能为空")
 	}

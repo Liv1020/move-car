@@ -3,6 +3,8 @@ package frontend
 import (
 	"encoding/json"
 
+	"net/http"
+
 	"github.com/Liv1020/move-car/components"
 	"github.com/Liv1020/move-car/middlewares"
 	"github.com/Liv1020/move-car/models"
@@ -17,6 +19,11 @@ type ws struct {
 
 // WS WS
 var WS = ws{}
+
+func init() {
+	WS.Clients = make(map[uint]*websocket.Conn, 500)
+	WS.Nexus = make(map[uint]map[uint]bool, 500)
+}
 
 // Handle Handle
 func (t *ws) Handle(c *gin.Context) {
@@ -46,6 +53,9 @@ func (t *ws) Handle(c *gin.Context) {
 	upgrade := websocket.Upgrader{
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
+		CheckOrigin: func(r *http.Request) bool {
+			return true
+		},
 	}
 
 	conn, err := upgrade.Upgrade(c.Writer, c.Request, nil)
@@ -56,10 +66,10 @@ func (t *ws) Handle(c *gin.Context) {
 
 	// 加入客户端列表
 	t.Clients[auth.ID] = conn
-	// 排除车主本人的
-	if auth.ID != qrCode.User.ID {
-		t.Nexus[qrCode.User.ID][auth.ID] = true
+	if _, ok := t.Nexus[qrCode.User.ID]; !ok {
+		t.Nexus[qrCode.User.ID] = make(map[uint]bool, 1)
 	}
+	t.Nexus[qrCode.User.ID][auth.ID] = true
 
 	for {
 		mt, msg, err := conn.ReadMessage()
@@ -85,12 +95,9 @@ func (t *ws) Handle(c *gin.Context) {
 
 	// 回收资源
 	delete(t.Clients, auth.ID)
-	// 排除车主本人的
-	if auth.ID != qrCode.User.ID {
-		delete(t.Nexus[qrCode.User.ID], auth.ID)
-		if len(t.Nexus[qrCode.User.ID]) == 0 {
-			delete(t.Nexus, qrCode.User.ID)
-		}
+	delete(t.Nexus[qrCode.User.ID], auth.ID)
+	if len(t.Nexus[qrCode.User.ID]) == 0 {
+		delete(t.Nexus, qrCode.User.ID)
 	}
 }
 
@@ -103,8 +110,8 @@ type message struct {
 	QrCode string `json:"qr_code"`
 	Type   int    `json:"type"`
 	Wait   struct {
-		Value int
-	}
+		Value int `json:"value"`
+	} `json:"wait"`
 }
 
 type response struct {
@@ -141,9 +148,9 @@ func wsSuccess(conn *websocket.Conn, messageType int, data interface{}) {
 // SendWait SendWait
 func (t *ws) SendWait(uid uint, wait int) {
 	message := &message{
-		Type: MessageTypeWait,
+		Type: websocket.TextMessage,
 		Wait: struct {
-			Value int
+			Value int `json:"value"`
 		}{
 			Value: wait,
 		},

@@ -90,7 +90,7 @@ func (t *wechat) Oauth(c *gin.Context) {
 	now := time.Now()
 	at := new(appToken)
 	at.Token = middlewares.JwtMiddleware.TokenGenerator(fmt.Sprintf("%d", u.ID))
-	at.ExpiredAt = int(now.Add(2*time.Hour - 30).Unix())
+	at.ExpiredAt = int(now.Add(2*time.Hour - 600).Unix()) // 比微信的超时时间短10分钟
 	at.User = resources.NewUser(u)
 
 	components.ResponseSuccess(c, at)

@@ -15,6 +15,6 @@ func RegisterMiddleware(router *gin.Engine) {
 		AllowOrigins:     []string{"http://localhost:8010", "http://mc.liv1020.com"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "HEAD", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
-		AllowCredentials: false,
+		AllowCredentials: true,
 	}))
 }

@@ -22,4 +22,5 @@ type User struct {
 	Mobile       string `gorm:"column:mobile"`
 	PlateNumber  string `gorm:"column:plate_number"`
 	IsSubscribe  int    `gorm:"column:is_subscribe"`
+	WaitMinute   int    `gorm:"column:wait_minute"`
 }

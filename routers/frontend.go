@@ -10,7 +10,7 @@ import (
 func registerFrontend(router *gin.Engine) {
 	f := router.Group("/frontend")
 	{
-		f.GET("/ws", frontend.WS.Handle)
+		f.GET("/ws", middlewares.JwtHttpMiddleware.MiddlewareFunc(), frontend.WS.Handle)
 
 		wechat := f.Group("/wechat")
 		{
@@ -23,10 +23,10 @@ func registerFrontend(router *gin.Engine) {
 		{
 			user.POST("/is-subscribe", frontend.User.IsSubscribe)
 			user.POST("/update", frontend.User.Update)
+			user.POST("/confirm", frontend.User.Confirm)
 		}
 
 		qr := f.Group("/qrcode")
-		// qr.Use(middlewares.JwtMiddleware.MiddlewareFunc())
 		{
 			qr.GET("/view", frontend.QrCode.View)
 			qr.POST("/create", frontend.QrCode.Create)

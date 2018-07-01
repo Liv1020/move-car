@@ -99,7 +99,6 @@ type form struct {
 	Code        string `json:"code"`
 }
 
-// Validate Validate
 func (t *form) validate() error {
 	if t.Mobile == "" {
 		return errors.New("手机号码不能为空")
@@ -131,4 +130,29 @@ func (t *form) validate() error {
 	}
 
 	return nil
+}
+
+// Confirm Confirm
+func (t *user) Confirm(c *gin.Context) {
+	auth := middlewares.JwtAuthFromClaims(c)
+	db := components.App.DB()
+
+	type form struct {
+		Wait int `json:"wait"`
+	}
+
+	p := new(form)
+	if err := c.BindJSON(p); err != nil {
+		return
+	}
+
+	auth.WaitMinute = p.Wait
+	if err := db.Save(auth).Error; err != nil {
+		components.ResponseError(c, 1, err)
+		return
+	}
+
+	WS.SendWait(auth.ID, p.Wait)
+
+	components.ResponseSuccess(c, nil)
 }

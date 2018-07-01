@@ -3,8 +3,6 @@ package middlewares
 import (
 	"time"
 
-	"errors"
-
 	"github.com/Liv1020/move-car/components"
 	"github.com/Liv1020/move-car/models"
 	"github.com/appleboy/gin-jwt"
@@ -13,45 +11,74 @@ import (
 
 // JwtMiddleware JwtMiddleware
 var JwtMiddleware *jwt.GinJWTMiddleware
+var JwtHttpMiddleware *jwt.GinJWTMiddleware
 
 // JwtAuthFromClaims JwtAuthFromClaims
 func JwtAuthFromClaims(c *gin.Context) *models.User {
-	claims := jwt.ExtractClaims(c)
-	uid := claims["id"]
-
-	db := components.App.DB()
-
 	user := new(models.User)
-	db.Where("id = ?", uid).Last(user)
+	val, ok := c.Get("auth")
+	if !ok {
+		return user
+	}
+
+	if user, ok = val.(*models.User); !ok {
+		return user
+	}
 
 	return user
 }
 
 func init() {
-	// the jwt middleware
+	// JwtMiddleware
 	JwtMiddleware = &jwt.GinJWTMiddleware{
 		Realm:      "Move Car",
 		Key:        []byte("b24bd75e0ab"),
-		Timeout:    time.Hour,
-		MaxRefresh: time.Hour,
+		Timeout:    2 * time.Hour,
+		MaxRefresh: 2 * time.Hour,
 		Authorizator: func(userID string, c *gin.Context) bool {
 			db := components.App.DB()
-			count := 0
-			if err := db.Where("id = ?", userID).Model(&models.User{}).Count(&count).Error; err != nil {
+			user := new(models.User)
+			if err := db.Where("id = ?", userID).Model(&models.User{}).Last(user).Error; err != nil {
 				return false
 			}
 
-			if count == 0 {
-				return false
-			}
+			c.Set("auth", user)
 
 			return true
 		},
 		Unauthorized: func(c *gin.Context, code int, message string) {
-			components.ResponseError(c, code, errors.New(message))
+			c.JSON(code, gin.H{
+				"status":  code,
+				"message": message,
+			})
 		},
 		TokenLookup:   "header:Authorization",
 		TokenHeadName: "Bearer",
-		TimeFunc:      time.Now,
+	}
+
+	// JwtHttpMiddleware
+	JwtHttpMiddleware = &jwt.GinJWTMiddleware{
+		Realm:      "Move Car",
+		Key:        []byte("b24bd75e0ab"),
+		Timeout:    2 * time.Hour,
+		MaxRefresh: 2 * time.Hour,
+		Authorizator: func(userID string, c *gin.Context) bool {
+			db := components.App.DB()
+			user := new(models.User)
+			if err := db.Where("id = ?", userID).Model(&models.User{}).Last(user).Error; err != nil {
+				return false
+			}
+
+			c.Set("auth", user)
+
+			return true
+		},
+		Unauthorized: func(c *gin.Context, code int, message string) {
+			c.JSON(code, gin.H{
+				"status":  code,
+				"message": message,
+			})
+		},
+		TokenLookup: "query:token",
 	}
 }

@@ -5,10 +5,10 @@ import (
 
 	"time"
 
-	"github.com/Liv1020/move-car/components"
-	"github.com/Liv1020/move-car/middlewares"
-	"github.com/Liv1020/move-car/models"
-	"github.com/Liv1020/move-car/resources"
+	"github.com/Liv1020/move-car-api/components"
+	"github.com/Liv1020/move-car-api/middlewares"
+	"github.com/Liv1020/move-car-api/models"
+	"github.com/Liv1020/move-car-api/resources"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	mpOauth "gopkg.in/chanxuehong/wechat.v2/mp/oauth2"

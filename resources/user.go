@@ -1,6 +1,6 @@
 package resources
 
-import "github.com/Liv1020/move-car/models"
+import "github.com/Liv1020/move-car-api/models"
 
 // User User
 type User struct {

@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Liv1020/move-car/components"
-	"github.com/Liv1020/move-car/middlewares"
+	"github.com/Liv1020/move-car-api/components"
+	"github.com/Liv1020/move-car-api/middlewares"
 	"github.com/gin-gonic/gin"
 )
 

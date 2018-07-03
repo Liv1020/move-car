@@ -9,7 +9,7 @@ import (
 	"math/rand"
 	"strings"
 
-	"github.com/Liv1020/move-car/components"
+	"github.com/Liv1020/move-car-api/components"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/chanxuehong/wechat.v2/mp/jssdk"
 )

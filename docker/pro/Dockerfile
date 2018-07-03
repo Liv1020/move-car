@@ -10,9 +10,9 @@ WORKDIR $GOPATH/src/
 
 RUN mkdir -p $GOPATH/src/github.com/Liv1020/ \
     && cd github.com/Liv1020/ \
-    && git clone git@github.com:Liv1020/move-car.git
+    && git clone git@github.com:Liv1020/move-car-api.git
 
-RUN cd $GOPATH/src/github.com/Liv1020/move-car/ \
+RUN cd $GOPATH/src/github.com/Liv1020/move-car-api/ \
     && git checkout master \
     && git pull origin master \
     && CGO_ENABLED=0 go build -a
@@ -26,6 +26,6 @@ RUN mkdir -p /usr/local/server
 WORKDIR /usr/local/server
 
 VOLUME /usr/local/server/conf
-COPY --from=build /go/src/github.com/Liv1020/move-car/move-car .
+COPY --from=build /go/src/github.com/Liv1020/move-car-api/move-car-api .
 
-CMD ["/usr/local/server/move-car"]
+CMD ["/usr/local/server/move-car-api"]

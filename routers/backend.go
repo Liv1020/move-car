@@ -1,8 +1,8 @@
 package routers
 
 import (
-	bc "github.com/Liv1020/move-car/controllers/backend"
-	"github.com/Liv1020/move-car/middlewares"
+	bc "github.com/Liv1020/move-car-api/controllers/backend"
+	"github.com/Liv1020/move-car-api/middlewares"
 	"github.com/gin-gonic/gin"
 )
 

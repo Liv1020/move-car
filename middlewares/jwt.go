@@ -3,8 +3,8 @@ package middlewares
 import (
 	"time"
 
-	"github.com/Liv1020/move-car/components"
-	"github.com/Liv1020/move-car/models"
+	"github.com/Liv1020/move-car-api/components"
+	"github.com/Liv1020/move-car-api/models"
 	"github.com/appleboy/gin-jwt"
 	"github.com/gin-gonic/gin"
 )

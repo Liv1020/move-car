@@ -3,7 +3,7 @@ package components
 import (
 	"fmt"
 
-	"github.com/Liv1020/move-car/components/logger"
+	"github.com/Liv1020/move-car-api/components/logger"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/configor"
 	"github.com/jinzhu/gorm"

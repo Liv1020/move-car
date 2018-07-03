@@ -6,9 +6,9 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/Liv1020/move-car/components"
-	"github.com/Liv1020/move-car/components/aliyun/vms"
-	"github.com/Liv1020/move-car/models"
+	"github.com/Liv1020/move-car-api/components"
+	"github.com/Liv1020/move-car-api/components/aliyun/vms"
+	"github.com/Liv1020/move-car-api/models"
 	"github.com/denverdino/aliyungo/sms"
 	"github.com/gin-gonic/gin"
 )

@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"github.com/Liv1020/move-car/controllers/frontend"
-	"github.com/Liv1020/move-car/middlewares"
+	"github.com/Liv1020/move-car-api/controllers/frontend"
+	"github.com/Liv1020/move-car-api/middlewares"
 	"github.com/gin-gonic/gin"
 )
 

@@ -1,7 +1,7 @@
 version: '3'
 services:
   api:
-    image: liv1020/go-move-car:pro
+    image: liv1020/move-car-api:pro
     volumes:
           - ./conf:/usr/local/server/conf
     links:

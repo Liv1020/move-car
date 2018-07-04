@@ -27,6 +27,10 @@ type Config struct {
 		AccessKeyId     string `required:"true"`
 		AccessKeySecret string `required:"true"`
 		Vms             struct {
+			CalledShowNumber string `required:"true"`
+			TtsCode          string `required:"true"`
+		}
+		Sms struct {
 			SignName     string `required:"true"`
 			TemplateCode string `required:"true"`
 		}

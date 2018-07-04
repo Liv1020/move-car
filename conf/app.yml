@@ -21,5 +21,8 @@ aliyun:
   accesskeyid: LTAIQk3xt3OM3qIv
   accesskeysecret: u57Niqa807wkxiXBNOP8Vkk9CbzmBX
   vms:
+    calledshownumber: 09314267618
+    ttscode: TTS_138069424
+  sms:
     signname: 智捷挪车
     templatecode: SMS_137875084

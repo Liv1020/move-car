@@ -50,12 +50,12 @@ func (t *aliyun) Call(c *gin.Context) {
 	// 	return
 	// }
 
-	conf := components.App.Config().Aliyun
-	cli := vms.NewDYVmsClient(conf.AccessKeyId, conf.AccessKeySecret)
+	aliyun := components.App.Config().Aliyun
+	cli := vms.NewDYVmsClient(aliyun.AccessKeyId, aliyun.AccessKeySecret)
 	res, err := cli.SendVms(&vms.SendVmsArgs{
-		CalledShowNumber: "09314267618",
+		CalledShowNumber: aliyun.Vms.CalledShowNumber,
 		CalledNumber:     row.User.Mobile,
-		TtsCode:          "TTS_137689626",
+		TtsCode:          aliyun.Vms.TtsCode,
 		TtsParam:         `{"plate":"` + row.User.PlateNumber + `"}`,
 		Volume:           100,
 		PlayTimes:        3,
@@ -91,8 +91,8 @@ func (t *aliyun) Sms(c *gin.Context) {
 
 	res, err := cli.SendSms(&sms.SendSmsArgs{
 		PhoneNumbers:  f.Mobile,
-		SignName:      conf.Vms.SignName,
-		TemplateCode:  conf.Vms.TemplateCode,
+		SignName:      conf.Sms.SignName,
+		TemplateCode:  conf.Sms.TemplateCode,
 		TemplateParam: `{"code": "` + code + `"}`,
 	})
 	if err != nil {

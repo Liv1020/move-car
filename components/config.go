@@ -17,7 +17,6 @@ type Config struct {
 	Wechat struct {
 		AppID          string `required:"true"`
 		AppSecret      string `required:"true"`
-		OAuthUrl       string `required:"true"`
 		TemplateID     string `required:"true"`
 		ConfirmUrl     string `required:"true"`
 		Token          string `required:"true"`

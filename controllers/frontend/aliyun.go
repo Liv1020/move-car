@@ -11,6 +11,7 @@ import (
 	"github.com/Liv1020/move-car-api/models"
 	"github.com/denverdino/aliyungo/sms"
 	"github.com/gin-gonic/gin"
+	"gopkg.in/chanxuehong/wechat.v2/mp/message/template"
 )
 
 type aliyun struct {
@@ -36,39 +37,44 @@ func (t *aliyun) Call(c *gin.Context) {
 		return
 	}
 
-	// wx := components.App.Config().Wechat
-	// co := components.App.WechatClient()
-	// message := &template.TemplateMessage{
-	// 	ToUser:     row.User.OpenID,
-	// 	TemplateId: wx.TemplateID,
-	// 	URL:        wx.ConfirmUrl,
-	// 	Data:       []byte(`{}`),
-	// }
-	// _, err := template.Send(co, message)
-	// if err != nil {
-	// 	components.ResponseError(c, 1, err)
-	// 	return
-	// }
+	wx := components.App.Config().Wechat
+	co := components.App.WechatClient()
 
-	aliyun := components.App.Config().Aliyun
-	cli := vms.NewDYVmsClient(aliyun.AccessKeyId, aliyun.AccessKeySecret)
-	res, err := cli.SendVms(&vms.SendVmsArgs{
-		CalledShowNumber: aliyun.Vms.CalledShowNumber,
-		CalledNumber:     row.User.Mobile,
-		TtsCode:          aliyun.Vms.TtsCode,
-		TtsParam:         `{"plate":"` + row.User.PlateNumber + `"}`,
-		Volume:           100,
-		PlayTimes:        3,
-	})
+	now := time.Now()
+	message := &template.TemplateMessage{
+		ToUser:     row.User.OpenID,
+		TemplateId: wx.TemplateID,
+		URL:        wx.ConfirmUrl,
+		Data:       []byte(`{"first":{"value":"兰智挪车让爱车更智能","color":"#173177"},"keyword1":{"value":"` + row.User.PlateNumber + `","color":"#173177"},"keyword2":{"value":"` + now.Format("2006-01-02 15:04:05") + `","color":"#173177"},"remark":{"value":"因你目前停放车子的位置影响了其他人出行，请尽快前往挪车！【点击前往】","color":"#173177"}}`),
+	}
+	_, err := template.Send(co, message)
 	if err != nil {
 		components.ResponseError(c, 1, err)
 		return
 	}
 
-	if res.Code != "OK" {
-		components.ResponseError(c, 1, errors.New(res.Message))
-		return
-	}
+	time.AfterFunc(time.Second*30, func() {
+		log := components.App.Logger()
+		aliyun := components.App.Config().Aliyun
+		cli := vms.NewDYVmsClient(aliyun.AccessKeyId, aliyun.AccessKeySecret)
+		res, err := cli.SendVms(&vms.SendVmsArgs{
+			CalledShowNumber: aliyun.Vms.CalledShowNumber,
+			CalledNumber:     row.User.Mobile,
+			TtsCode:          aliyun.Vms.TtsCode,
+			TtsParam:         `{"plate":"` + row.User.PlateNumber + `"}`,
+			Volume:           100,
+			PlayTimes:        3,
+		})
+		if err != nil {
+			log.Error(err.Error())
+			return
+		}
+
+		if res.Code != "OK" {
+			log.Error(res.Message)
+			return
+		}
+	})
 
 	components.ResponseSuccess(c, nil)
 }

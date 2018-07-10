@@ -12,9 +12,8 @@ db:
 wechat:
   appid: wx351aab24bd75e0ab
   appsecret: fe53187244f178a7a4ee817599107e00
-  oauthurl: http://mc.liv1020.com/oauth/code
-  templateid: xxxxxxx
-  confirmurl: xxxxxxx
+  templateid: 8Z_lm_wAhACXyFuSXqLP89tAfl0wBiYbvur9wM12Sew
+  confirmurl: http://mc.liv1020.com/confirm
   token: 244f178a7a4ee81
   encodingaeskey: 8fwF7eV4J2kaC57ZDWYq9oiD35aM4ZYGdO3GR0chhxq
 aliyun:

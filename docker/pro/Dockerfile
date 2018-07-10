@@ -26,6 +26,8 @@ RUN mkdir -p /usr/local/server
 WORKDIR /usr/local/server
 
 VOLUME /usr/local/server/conf
+COPY --from=build /go/src/github.com/Liv1020/move-car-api/conf ./conf/
+COPY --from=build /go/src/github.com/Liv1020/move-car-api/data ./data/
 COPY --from=build /go/src/github.com/Liv1020/move-car-api/move-car-api .
 
 CMD ["/usr/local/server/move-car-api"]

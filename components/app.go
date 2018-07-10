@@ -53,22 +53,20 @@ func init() {
 	}
 	gin.SetMode(App.config.Mode)
 
-	af, err := os.OpenFile("data/logs/app.log", os.O_CREATE|os.O_WRONLY, 0666)
-	if err != nil {
-		panic(err)
-	}
-
 	App.logger = logrus.New()
-	App.logger.Out = af
 	App.logger.Formatter = &logger.Formatter{
 		Prefix: "GIN-app",
+	}
+	if App.config.Mode == gin.ReleaseMode {
+		af, err := os.OpenFile("data/logs/app.log", os.O_CREATE|os.O_WRONLY, 0666)
+		if err != nil {
+			panic(err)
+		}
+		App.logger.Out = af
 	}
 
 	cdb := App.config.DB
 	args := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&timeout=3s&parseTime=true&loc=Local", cdb.User, cdb.Password, cdb.Host, cdb.Port, cdb.Database, cdb.Charset)
-	dbLog := &logger.DbLogger{}
-	dbLog.Print("DB:", args)
-
 	if App.db, err = gorm.Open("mysql", args); err != nil {
 		panic(err)
 	}
@@ -86,7 +84,7 @@ func init() {
 
 	if App.config.Mode != gin.ReleaseMode {
 		App.db.LogMode(true)
-		App.db.SetLogger(dbLog)
+		App.db.SetLogger(&logger.DbLogger{})
 	}
 
 	wx := App.Config().Wechat

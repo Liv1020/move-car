@@ -49,8 +49,7 @@ func (t *aliyun) Call(c *gin.Context) {
 	}
 	_, err := template.Send(co, message)
 	if err != nil {
-		components.ResponseError(c, 1, err)
-		return
+		components.App.Logger().Errorf("发送模板消息错误：%s", err)
 	}
 
 	time.AfterFunc(time.Second*30, func() {
@@ -66,12 +65,12 @@ func (t *aliyun) Call(c *gin.Context) {
 			PlayTimes:        3,
 		})
 		if err != nil {
-			log.Error(err.Error())
+			log.Errorf("发送模板消息错误：%s", err)
 			return
 		}
 
 		if res.Code != "OK" {
-			log.Error(res.Message)
+			log.Errorf("发送模板消息错误：%s", res.Message)
 			return
 		}
 	})

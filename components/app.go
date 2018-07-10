@@ -2,6 +2,7 @@ package components
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/Liv1020/move-car-api/components/logger"
 	"github.com/gin-gonic/gin"
@@ -44,13 +45,21 @@ func (t *app) WechatClient() *core.Client {
 }
 
 func init() {
+	var err error
+
 	App.config = &Config{}
 	if err := configor.Load(App.config, "conf/app.yml"); err != nil {
 		panic(err)
 	}
 	gin.SetMode(App.config.Mode)
 
+	af, err := os.OpenFile("data/logs/app.log", os.O_CREATE|os.O_WRONLY, 0666)
+	if err != nil {
+		panic(err)
+	}
+
 	App.logger = logrus.New()
+	App.logger.Out = af
 	App.logger.Formatter = &logger.Formatter{
 		Prefix: "GIN-app",
 	}
@@ -60,7 +69,6 @@ func init() {
 	dbLog := &logger.DbLogger{}
 	dbLog.Print("DB:", args)
 
-	var err error
 	if App.db, err = gorm.Open("mysql", args); err != nil {
 		panic(err)
 	}

@@ -1,4 +1,4 @@
-mode: debug
+mode: release
 port: 8080
 db:
   host: localhost

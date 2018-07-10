@@ -58,7 +58,7 @@ func init() {
 		Prefix: "GIN-app",
 	}
 	if App.config.Mode == gin.ReleaseMode {
-		af, err := os.OpenFile("data/logs/app.log", os.O_CREATE|os.O_WRONLY, 0666)
+		af, err := os.OpenFile("data/logs/app.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 		if err != nil {
 			panic(err)
 		}

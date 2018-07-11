@@ -147,7 +147,8 @@ func (t *user) Confirm(c *gin.Context) {
 	}
 
 	now := time.Now()
-	auth.MoveAt = now.Add(time.Duration(p.Wait) * time.Minute)
+	mt := now.Add(time.Duration(p.Wait) * time.Minute)
+	auth.MoveAt = &mt
 	if err := db.Save(auth).Error; err != nil {
 		components.ResponseError(c, 1, err)
 		return

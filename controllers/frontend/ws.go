@@ -137,6 +137,10 @@ func wsSuccess(conn *websocket.Conn, messageType int, data interface{}) {
 
 // SendWait SendWait
 func (t *ws) SendWait(owner *models.User) {
+	if owner.MoveAt == nil {
+		return
+	}
+
 	now := time.Now()
 	d := owner.MoveAt.Sub(now)
 	if d <= 0 {

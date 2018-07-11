@@ -16,15 +16,15 @@ const (
 // User User
 type User struct {
 	gorm.Model
-	OpenID       string    `gorm:"column:openid"`
-	Nickname     string    `gorm:"column:nickname"`
-	Sex          int       `gorm:"column:sex"`
-	City         string    `gorm:"column:city"`
-	Province     string    `gorm:"column:province"`
-	Country      string    `gorm:"column:country"`
-	HeadImageUrl string    `gorm:"column:head_image_url"`
-	Mobile       string    `gorm:"column:mobile"`
-	PlateNumber  string    `gorm:"column:plate_number"`
-	IsSubscribe  int       `gorm:"column:is_subscribe"`
-	MoveAt       time.Time `gorm:"column:move_at"`
+	OpenID       string     `gorm:"column:openid"`
+	Nickname     string     `gorm:"column:nickname"`
+	Sex          int        `gorm:"column:sex"`
+	City         string     `gorm:"column:city"`
+	Province     string     `gorm:"column:province"`
+	Country      string     `gorm:"column:country"`
+	HeadImageUrl string     `gorm:"column:head_image_url"`
+	Mobile       string     `gorm:"column:mobile"`
+	PlateNumber  string     `gorm:"column:plate_number"`
+	IsSubscribe  int        `gorm:"column:is_subscribe"`
+	MoveAt       *time.Time `gorm:"column:move_at"`
 }

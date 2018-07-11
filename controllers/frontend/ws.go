@@ -71,6 +71,9 @@ func (t *ws) Handle(c *gin.Context) {
 	}
 	t.Nexus[qrCode.User.ID][auth.ID] = true
 
+	// 发送通知
+	t.SendWait(qrCode.User.ID, qrCode.User.WaitMinute)
+
 	for {
 		mt, msg, err := conn.ReadMessage()
 		if err != nil {

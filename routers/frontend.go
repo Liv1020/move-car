@@ -40,7 +40,7 @@ func registerFrontend(router *gin.Engine) {
 		}
 
 		aliyun := f.Group("/aliyun")
-		// aliyun.Use(middlewares.JwtMiddleware.MiddlewareFunc())
+		aliyun.Use(middlewares.JwtMiddleware.MiddlewareFunc())
 		{
 			aliyun.POST("/call", frontend.Aliyun.Call)
 			aliyun.POST("/sms", frontend.Aliyun.Sms)

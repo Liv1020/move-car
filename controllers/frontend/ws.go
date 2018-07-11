@@ -2,8 +2,10 @@ package frontend
 
 import (
 	"encoding/json"
-
 	"net/http"
+
+	"math"
+	"time"
 
 	"github.com/Liv1020/move-car-api/components"
 	"github.com/Liv1020/move-car-api/middlewares"
@@ -77,7 +79,7 @@ func (t *ws) Handle(c *gin.Context) {
 	}()
 
 	// 发送通知
-	t.SendWait(qrCode.User.ID, qrCode.User.WaitMinute)
+	t.SendWait(qrCode.User)
 
 	for {
 		mt, msg, err := conn.ReadMessage()
@@ -85,20 +87,7 @@ func (t *ws) Handle(c *gin.Context) {
 			break
 		}
 
-		message := new(message)
-		if err := json.Unmarshal(msg, message); err != nil {
-			switch message.Type {
-			case MessageTypeWait:
-				auth.WaitMinute = message.Wait.Value
-				if err := db.Save(auth).Error; err != nil {
-					wsError(conn, mt, 1, err)
-					continue
-				}
-
-				// 发送通知
-				t.SendWait(qrCode.User.ID, message.Wait.Value)
-			}
-		}
+		wsSuccess(conn, mt, msg)
 	}
 }
 
@@ -111,7 +100,7 @@ type message struct {
 	QrCode string `json:"qr_code"`
 	Type   int    `json:"type"`
 	Wait   struct {
-		Value int `json:"value"`
+		Value float64 `json:"value"`
 	} `json:"wait"`
 }
 
@@ -147,18 +136,24 @@ func wsSuccess(conn *websocket.Conn, messageType int, data interface{}) {
 }
 
 // SendWait SendWait
-func (t *ws) SendWait(uid uint, wait int) {
+func (t *ws) SendWait(owner *models.User) {
+	now := time.Now()
+	d := owner.MoveAt.Sub(now)
+	if d <= 0 {
+		return
+	}
+
 	message := &message{
 		Type: websocket.TextMessage,
 		Wait: struct {
-			Value int `json:"value"`
+			Value float64 `json:"value"`
 		}{
-			Value: wait,
+			Value: math.Ceil(d.Minutes()),
 		},
 	}
 
 	// 发送通知
-	if ns, ok := t.Nexus[uid]; ok {
+	if ns, ok := t.Nexus[owner.ID]; ok {
 		for uid := range ns {
 			if c, ok := t.Clients[uid]; ok {
 				wsSuccess(c, websocket.TextMessage, message)

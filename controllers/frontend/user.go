@@ -146,13 +146,14 @@ func (t *user) Confirm(c *gin.Context) {
 		return
 	}
 
-	auth.WaitMinute = p.Wait
+	now := time.Now()
+	auth.MoveAt = now.Add(time.Duration(p.Wait) * time.Minute)
 	if err := db.Save(auth).Error; err != nil {
 		components.ResponseError(c, 1, err)
 		return
 	}
 
-	WS.SendWait(auth.ID, p.Wait)
+	WS.SendWait(auth)
 
 	components.ResponseSuccess(c, nil)
 }

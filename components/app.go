@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	"time"
+
 	"github.com/Liv1020/move-car-api/components/logger"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/configor"
@@ -81,6 +83,8 @@ func init() {
 	App.db.DB().SetMaxIdleConns(cdb.MaxIdle)
 	// 最大链接数
 	App.db.DB().SetMaxOpenConns(cdb.MaxOpen)
+	// 生命周期
+	App.db.DB().SetConnMaxLifetime(time.Duration(cdb.MaxLifetime))
 
 	if App.config.Mode != gin.ReleaseMode {
 		App.db.LogMode(true)

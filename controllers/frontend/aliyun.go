@@ -44,7 +44,7 @@ func (t *aliyun) Call(c *gin.Context) {
 	message := &template.TemplateMessage{
 		ToUser:     row.User.OpenID,
 		TemplateId: wx.TemplateID,
-		URL:        wx.ConfirmUrl,
+		URL:        fmt.Sprintf("%s?qr=%d", wx.ConfirmUrl, row.ID),
 		Data:       []byte(`{"first":{"value":"兰智挪车让爱车更智能","color":"#173177"},"keyword1":{"value":"` + row.User.PlateNumber + `","color":"#173177"},"keyword2":{"value":"` + now.Format("2006-01-02 15:04:05") + `","color":"#173177"},"remark":{"value":"因你目前停放车子的位置影响了其他人出行，请尽快前往挪车！【点击前往】","color":"#173177"}}`),
 	}
 	_, err := template.Send(co, message)

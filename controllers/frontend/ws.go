@@ -65,11 +65,16 @@ func (t *ws) Handle(c *gin.Context) {
 	}
 
 	// 加入客户端列表
-	t.Clients[auth.ID] = conn
-	if _, ok := t.Nexus[qrCode.User.ID]; !ok {
-		t.Nexus[qrCode.User.ID] = make(map[uint]bool, 1)
-	}
-	t.Nexus[qrCode.User.ID][auth.ID] = true
+	t.AddClient(auth.ID, conn)
+	defer func() {
+		t.RemoveClient(auth.ID)
+	}()
+
+	// 加入关系网
+	t.AddNexus(qrCode.User.ID, auth.ID)
+	defer func() {
+		t.RemoveNexus(qrCode.User.ID, auth.ID)
+	}()
 
 	// 发送通知
 	t.SendWait(qrCode.User.ID, qrCode.User.WaitMinute)
@@ -94,13 +99,6 @@ func (t *ws) Handle(c *gin.Context) {
 				t.SendWait(qrCode.User.ID, message.Wait.Value)
 			}
 		}
-	}
-
-	// 回收资源
-	delete(t.Clients, auth.ID)
-	delete(t.Nexus[qrCode.User.ID], auth.ID)
-	if len(t.Nexus[qrCode.User.ID]) == 0 {
-		delete(t.Nexus, qrCode.User.ID)
 	}
 }
 
@@ -165,6 +163,38 @@ func (t *ws) SendWait(uid uint, wait int) {
 			if c, ok := t.Clients[uid]; ok {
 				wsSuccess(c, websocket.TextMessage, message)
 			}
+		}
+	}
+}
+
+// AddClient AddClient
+func (t *ws) AddClient(uid uint, conn *websocket.Conn) {
+	t.RemoveClient(uid)
+	t.Clients[uid] = conn
+}
+
+// RemoveClient RemoveClient
+func (t *ws) RemoveClient(uid uint) {
+	if client, ok := t.Clients[uid]; ok {
+		client.Close()
+		delete(t.Clients, uid)
+	}
+}
+
+// AddNexus AddNexus
+func (t *ws) AddNexus(owner uint, notice uint) {
+	if _, ok := t.Nexus[owner]; !ok {
+		t.Nexus[owner] = make(map[uint]bool, 1)
+	}
+	t.Nexus[owner][notice] = true
+}
+
+// RemoveNexus RemoveNexus
+func (t *ws) RemoveNexus(owner uint, notice uint) {
+	if len(t.Nexus[owner]) > 0 {
+		delete(t.Nexus[owner], notice)
+		if len(t.Nexus[owner]) == 0 {
+			delete(t.Nexus, owner)
 		}
 	}
 }

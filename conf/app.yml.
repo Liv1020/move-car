@@ -1,5 +1,5 @@
-mode: release
 port: 8080
+mode: debug
 db:
   host: localhost
   port: 3306
@@ -7,8 +7,9 @@ db:
   password: 123456
   database: application
   charset: utf8mb4
-  maxidle: 10
-  maxopen: 20
+  maxidle: 20
+  maxopen: 50
+  maxlifetime: 25200
 wechat:
   appid: wx351aab24bd75e0ab
   appsecret: fe53187244f178a7a4ee817599107e00

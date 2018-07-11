@@ -3,7 +3,7 @@ services:
   api:
     image: liv1020/move-car-api:pro
     volumes:
-          - ./conf:/usr/local/server/conf
+      - ./conf:/usr/local/server/conf
     links:
       - db
     ports:

@@ -52,28 +52,30 @@ func (t *aliyun) Call(c *gin.Context) {
 		components.App.Logger().Errorf("发送模板消息错误：%s", err)
 	}
 
-	time.AfterFunc(time.Second*30, func() {
-		log := components.App.Logger()
-		aliyun := components.App.Config().Aliyun
-		cli := vms.NewDYVmsClient(aliyun.AccessKeyId, aliyun.AccessKeySecret)
-		res, err := cli.SendVms(&vms.SendVmsArgs{
-			CalledShowNumber: aliyun.Vms.CalledShowNumber,
-			CalledNumber:     row.User.Mobile,
-			TtsCode:          aliyun.Vms.TtsCode,
-			TtsParam:         `{"plate":"` + row.User.PlateNumber + `"}`,
-			Volume:           100,
-			PlayTimes:        3,
-		})
-		if err != nil {
-			log.Errorf("发送模板消息错误：%s", err)
-			return
-		}
+	if !row.User.IsReply() {
+		time.AfterFunc(time.Second*30, func() {
+			log := components.App.Logger()
+			aliyun := components.App.Config().Aliyun
+			cli := vms.NewDYVmsClient(aliyun.AccessKeyId, aliyun.AccessKeySecret)
+			res, err := cli.SendVms(&vms.SendVmsArgs{
+				CalledShowNumber: aliyun.Vms.CalledShowNumber,
+				CalledNumber:     row.User.Mobile,
+				TtsCode:          aliyun.Vms.TtsCode,
+				TtsParam:         `{"plate":"` + row.User.PlateNumber + `"}`,
+				Volume:           100,
+				PlayTimes:        3,
+			})
+			if err != nil {
+				log.Errorf("发送模板消息错误：%s", err)
+				return
+			}
 
-		if res.Code != "OK" {
-			log.Errorf("发送模板消息错误：%s", res.Message)
-			return
-		}
-	})
+			if res.Code != "OK" {
+				log.Errorf("发送模板消息错误：%s", res.Message)
+				return
+			}
+		})
+	}
 
 	components.ResponseSuccess(c, nil)
 }

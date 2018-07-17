@@ -28,3 +28,18 @@ type User struct {
 	IsSubscribe  int        `gorm:"column:is_subscribe"`
 	MoveAt       *time.Time `gorm:"column:move_at"`
 }
+
+// IsReply 是否回复
+func (t *User) IsReply() bool {
+	if t.MoveAt == nil {
+		return false
+	}
+
+	now := time.Now()
+	d := t.MoveAt.Sub(now)
+	if d <= 0 {
+		return false
+	} else {
+		return true
+	}
+}

@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"github.com/Liv1020/move-car-api/controllers/backend"
 	"github.com/Liv1020/move-car-api/controllers/frontend"
 	"github.com/Liv1020/move-car-api/middlewares"
 	"github.com/gin-gonic/gin"
@@ -24,6 +25,7 @@ func registerFrontend(router *gin.Engine) {
 			user.POST("/is-subscribe", frontend.User.IsSubscribe)
 			user.POST("/update", frontend.User.Update)
 			user.POST("/confirm", frontend.User.Confirm)
+			user.GET("/search", backend.User.Search)
 		}
 
 		qr := f.Group("/qrcode")

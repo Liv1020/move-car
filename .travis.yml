@@ -5,5 +5,10 @@ language: go
 services:
 - docker
 
+before_install:
+- curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+- dep ensure
+
 script:
-- docker/pro/build.sh
+- cd docker/pro
+- ./build.sh

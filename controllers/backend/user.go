@@ -1,6 +1,8 @@
 package backend
 
 import (
+	"strconv"
+
 	"github.com/Liv1020/move-car-api/components"
 	"github.com/Liv1020/move-car-api/models"
 	"github.com/gin-gonic/gin"
@@ -18,9 +20,11 @@ func (t *user) Search(c *gin.Context) {
 		Data:  make([]*u, 0, 15),
 		Total: 0,
 	}
+	p, _ := strconv.Atoi(c.Query("page"))
+	s, _ := strconv.Atoi(c.Query("size"))
 	page := components.Page{
-		Page: c.GetInt("page"),
-		Size: c.GetInt("size"),
+		Page: p,
+		Size: s,
 	}
 
 	if err := db.Offset(page.GetOffset()).Limit(page.GetLimit()).Count(&list.Total).Error; err != nil {

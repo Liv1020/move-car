@@ -20,7 +20,7 @@ func registerFrontend(router *gin.Engine) {
 		}
 
 		user := f.Group("/user")
-		//user.Use(middlewares.JwtMiddleware.MiddlewareFunc())
+		user.Use(middlewares.JwtMiddleware.MiddlewareFunc())
 		{
 			user.POST("/is-subscribe", frontend.User.IsSubscribe)
 			user.POST("/update", frontend.User.Update)

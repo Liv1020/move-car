@@ -47,5 +47,11 @@ func registerFrontend(router *gin.Engine) {
 			aliyun.POST("/call", frontend.Aliyun.Call)
 			aliyun.POST("/sms", frontend.Aliyun.Sms)
 		}
+
+		k8s := f.Group("/k8s")
+		{
+			k8s.GET("/v1", frontend.K8S.V1)
+			k8s.GET("/v2", frontend.K8S.V2)
+		}
 	}
 }

@@ -1,5 +1,5 @@
 FROM golang:1.11-alpine3.7 AS build
-LABEL pavle=523260513@qq.com
+MAINTAINER pavle "523260513@qq.com"
 
 RUN apk add --no-cache git openssh
 
@@ -18,7 +18,7 @@ RUN cd $GOPATH/src/github.com/Liv1020/move-car-api/ \
     && CGO_ENABLED=0 go build -a -ldflags '-w -s'
 
 FROM alpine:latest
-LABEL pavle=523260513@qq.com
+MAINTAINER pavle "523260513@qq.com"
 
 RUN apk add --no-cache ca-certificates
 

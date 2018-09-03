@@ -1,0 +1,64 @@
+# github.com/BurntSushi/toml v0.3.0
+github.com/BurntSushi/toml
+# github.com/appleboy/gin-jwt v2.3.1+incompatible
+github.com/appleboy/gin-jwt
+# github.com/chanxuehong/rand v0.0.0-20180428235808-560f6cc0eaa5
+github.com/chanxuehong/rand
+# github.com/chanxuehong/util v0.0.0-20180507110909-3283ef9c9f25
+github.com/chanxuehong/util/security
+# github.com/denverdino/aliyungo v0.0.0-20180621152406-a854445ff36d
+github.com/denverdino/aliyungo/common
+github.com/denverdino/aliyungo/sms
+github.com/denverdino/aliyungo/util
+# github.com/gin-contrib/cors v0.0.0-20170318125340-cf4846e6a636
+github.com/gin-contrib/cors
+# github.com/gin-contrib/sse v0.0.0-20170109093832-22d885f9ecc7
+github.com/gin-contrib/sse
+# github.com/gin-gonic/gin v0.0.0-20170702092826-d459835d2b07
+github.com/gin-gonic/gin
+github.com/gin-gonic/gin/binding
+github.com/gin-gonic/gin/render
+# github.com/go-sql-driver/mysql v1.4.0
+github.com/go-sql-driver/mysql
+# github.com/golang/protobuf v1.1.0
+github.com/golang/protobuf/proto
+# github.com/gorilla/websocket v1.2.0
+github.com/gorilla/websocket
+# github.com/jinzhu/configor v0.0.0-20180614024415-4edaf76fe188
+github.com/jinzhu/configor
+# github.com/jinzhu/gorm v1.9.1
+github.com/jinzhu/gorm
+github.com/jinzhu/gorm/dialects/mysql
+# github.com/jinzhu/inflection v0.0.0-20180308033659-04140366298a
+github.com/jinzhu/inflection
+# github.com/mattn/go-isatty v0.0.3
+github.com/mattn/go-isatty
+# github.com/sirupsen/logrus v1.0.5
+github.com/sirupsen/logrus
+# github.com/ugorji/go v1.1.1
+github.com/ugorji/go/codec
+# golang.org/x/crypto v0.0.0-20180621125126-a49355c7e3f8
+golang.org/x/crypto/ssh/terminal
+# golang.org/x/sys v0.0.0-20180616030259-6c888cc515d3
+golang.org/x/sys/unix
+golang.org/x/sys/windows
+# google.golang.org/appengine v1.1.0
+google.golang.org/appengine/cloudsql
+# gopkg.in/chanxuehong/wechat.v2 v2.0.0-20180517070429-e3b827ccaa0f
+gopkg.in/chanxuehong/wechat.v2/mp/core
+gopkg.in/chanxuehong/wechat.v2/util
+gopkg.in/chanxuehong/wechat.v2/mp/jssdk
+gopkg.in/chanxuehong/wechat.v2/mp/message/template
+gopkg.in/chanxuehong/wechat.v2/mp/oauth2
+gopkg.in/chanxuehong/wechat.v2/mp/user
+gopkg.in/chanxuehong/wechat.v2/oauth2
+gopkg.in/chanxuehong/wechat.v2/internal/debug/api
+gopkg.in/chanxuehong/wechat.v2/internal/debug/api/retry
+gopkg.in/chanxuehong/wechat.v2/internal/debug/callback
+gopkg.in/chanxuehong/wechat.v2/internal/util
+# gopkg.in/dgrijalva/jwt-go.v3 v3.2.0
+gopkg.in/dgrijalva/jwt-go.v3
+# gopkg.in/go-playground/validator.v8 v8.18.2
+gopkg.in/go-playground/validator.v8
+# gopkg.in/yaml.v2 v2.2.1
+gopkg.in/yaml.v2

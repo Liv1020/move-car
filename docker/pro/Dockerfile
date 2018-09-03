@@ -1,4 +1,4 @@
-FROM golang:1.10.3-alpine3.7 AS build
+FROM golang:1.11-alpine3.7 AS build
 LABEL pavle=523260513@qq.com
 
 RUN apk add --no-cache git openssh

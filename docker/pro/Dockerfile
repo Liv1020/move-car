@@ -15,7 +15,7 @@ RUN mkdir -p $GOPATH/src/github.com/Liv1020/ \
 RUN cd $GOPATH/src/github.com/Liv1020/move-car-api/ \
     && git checkout master \
     && git pull origin master \
-    && CGO_ENABLED=0 go build -a
+    && CGO_ENABLED=0 go build -a -ldflags '-w -s'
 
 FROM alpine:latest
 LABEL pavle=523260513@qq.com

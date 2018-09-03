@@ -14,9 +14,10 @@ github.com/denverdino/aliyungo/util
 github.com/gin-contrib/cors
 # github.com/gin-contrib/sse v0.0.0-20170109093832-22d885f9ecc7
 github.com/gin-contrib/sse
-# github.com/gin-gonic/gin v0.0.0-20170702092826-d459835d2b07
+# github.com/gin-gonic/gin v1.3.0
 github.com/gin-gonic/gin
 github.com/gin-gonic/gin/binding
+github.com/gin-gonic/gin/json
 github.com/gin-gonic/gin/render
 # github.com/go-sql-driver/mysql v1.4.0
 github.com/go-sql-driver/mysql
@@ -31,8 +32,14 @@ github.com/jinzhu/gorm
 github.com/jinzhu/gorm/dialects/mysql
 # github.com/jinzhu/inflection v0.0.0-20180308033659-04140366298a
 github.com/jinzhu/inflection
+# github.com/json-iterator/go v1.1.5
+github.com/json-iterator/go
 # github.com/mattn/go-isatty v0.0.3
 github.com/mattn/go-isatty
+# github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
+github.com/modern-go/concurrent
+# github.com/modern-go/reflect2 v1.0.1
+github.com/modern-go/reflect2
 # github.com/sirupsen/logrus v1.0.5
 github.com/sirupsen/logrus
 # github.com/ugorji/go v1.1.1
